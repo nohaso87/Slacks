@@ -61,14 +61,10 @@ function Home() {
   const { uid, starred } = useSelector((state) => state.user);
 
   const utility = Utility();
-  const { activeChannel } = useSelector((state) => state.channels);
+  const { activeChannel, showChannel } = useSelector((state) => state.channels);
   const { username, userimg } = useSelector((state) => state.user);
   const { currentDirect } = useSelector((state)=>state.direct)
   const dispatch = useDispatch();
-
-  useEffect(()=>{
-    console.log()
-  })
 
   useEffect(() => {
     if (loading) {
@@ -296,7 +292,7 @@ function Home() {
           />
           <Direct bundle={bundle.getDirectMessages}></Direct>
         </Panel>
-        <Panel className="thirdPanel">
+        <Panel className="thirdPanel" revealChannel={showChannel}>
           <ChatCreator createreplies={currentDirect ? handleDirectMessage : handleCreate} createMedia={handleMedia}></ChatCreator>
           <InnerPanel>
             <ChatArea bundle={bundle}></ChatArea>

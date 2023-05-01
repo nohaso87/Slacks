@@ -10,6 +10,7 @@ import { auth, db } from "../../../Config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { setStarred } from "../../features/Users/UserSlice";
 import { ThreeDots } from "react-loading-icons";
+import { setShowChannel } from "../../features/Channels/ChannelSlice";
 
 function Starred({ getselectedroomprop }) {
   const [ user ] = useAuthState(auth)
@@ -21,30 +22,32 @@ function Starred({ getselectedroomprop }) {
   // Load Starred 
   useEffect(()=>{
     if(activeChannel.name){
+
+      const getStarred = () =>{
+        const userRef = collection(db, "users")
+        const userQuery = query(userRef, where("uid","==",user.uid))
+        onSnapshot(userQuery, (snapshot) => {
+          let starredList = []
+          snapshot.forEach((starredItem) =>{
+            if(!starredItem.data().starred){
+              // No starred
+            }else{
+              const pulledList = starredItem.data().starred
+              pulledList.reverse()
+              starredList.push(...pulledList)
+            }
+          })
+          dispatch(setStarred(starredList))
+        })
+      }
+      
       getStarred()
     }
   },[activeChannel.name])
 
-  const getStarred = () =>{
-    const userRef = collection(db, "users")
-    const userQuery = query(userRef, where("uid","==",user.uid))
-    onSnapshot(userQuery, (snapshot) => {
-      let starredList = []
-      snapshot.forEach((starredItem) =>{
-        if(!starredItem.data().starred){
-          // No starred
-        }else{
-          const pulledList = starredItem.data().starred
-          pulledList.reverse()
-          starredList.push(...pulledList)
-        }
-      })
-      dispatch(setStarred(starredList))
-    })
-  }
-
   const handleChannelSelection = (selected) => {
     getselectedroomprop(selected)
+    dispatch(setShowChannel("true"))
   }
 
   return (

@@ -26,16 +26,19 @@ const Login = () => {
 
   useEffect(() => {
     if (loading) {
-    }
-    if (user) utility.goTo("/");
-  }, [user, loading, utility]);
+    }else if (user) utility.goTo("/");
+  }, [user, loading, utility])
 
   const handleLogin = (e) => {
     e.preventDefault();
+    e.target.disabled = true
+    e.target.value = "..."
 
     if (email && password) {
       loginUserWithEmailAndPassword(email, password)
         .then(async (userCredentials) => {
+          e.target.disabled = false
+          e.target.value = "Login"
           const collectionRef = collection(db, "users")
           const queryRef = query(collectionRef, where("email","==",email.toLowerCase()))
           const userDoc = await getDocs(queryRef)
@@ -57,6 +60,8 @@ const Login = () => {
         });
     } else {
       utility.notify("All fields are mandatory!");
+      e.target.disabled = false
+      e.target.value = "Login"
     }
   };
 

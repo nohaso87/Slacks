@@ -9,7 +9,8 @@ import * as local from "./ChannelElements";
 import AddChannel from "../AddChannel";
 import {
   loadChannelList,
-  setActiveChannel
+  setActiveChannel,
+  setShowChannel
 } from "../../features/Channels/ChannelSlice";
 
 // Firebase
@@ -69,6 +70,7 @@ function Channels({roomdataprop, getselectedroomprop}) {
     roomdataprop(selected)
     getselectedroomprop(selected)
     dispatch(setCurrentDirect(null))
+    dispatch(setShowChannel("true"))
   }
   const toggleAddNewChannel = () => {
     setVisible(!visible);

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import {AiOutlineClose} from 'react-icons/ai'
 
 // Firebase
 import { createNewChannel } from "../../Config/Firebase";
@@ -32,6 +33,7 @@ function AddChannel(props) {
 
   const addChannel = async (e) => {
     e.preventDefault();
+    e.target.disabled = true;
     if (channel && description) {
       const channelData = {
         name: channel,
@@ -40,6 +42,7 @@ function AddChannel(props) {
       setAdding("Loading");
       createNewChannel(channelData, username)
         .then((res) => {
+          e.target.disabled = false;
           handleBoxDisplay();
           setChannel("");
           setDescription("");
@@ -70,11 +73,11 @@ function AddChannel(props) {
           ></NewChannelAbout>
           <NewChannelInput
             type="submit"
-            value={adding ? adding : "ADD CHANNEL"}
+            value={adding ? adding : "Add Channel"}
             onClick={addChannel}
           />
         </NewChannelForm>
-        <AddChannelClose onClick={handleBoxDisplay}>Close</AddChannelClose>
+        <AddChannelClose onClick={handleBoxDisplay}><AiOutlineClose /></AddChannelClose>
       </NewChannelWrapper>
     </AddNewChannel>
   );

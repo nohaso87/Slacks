@@ -11,7 +11,8 @@ const INITIAL_STATE = {
   },
   selectedChannel: "",
   totalUsers: 0,
-  topPosters: {}
+  topPosters: {},
+  showChannel: "false",
 };
 
 const ChannelSlice = createSlice({
@@ -28,17 +29,29 @@ const ChannelSlice = createSlice({
       state.activeChannel.createdAt = payload.createdAt_seconds;
       state.activeChannel.createdBy = payload.createdBy;
     },
-    setTotalUsersCount: (state, {payload}) => {
-      state.totalUsers = payload
+    setTotalUsersCount: (state, { payload }) => {
+      state.totalUsers = payload;
     },
-    setTopPosters: (state, {payload}) =>{
-      state.topPosters = payload
-      console.log(state.topPosters)
+    setTopPosters: (state, { payload }) => {
+      state.topPosters = payload;
+      console.log(state.topPosters);
     },
-    resetChannel: () => INITIAL_STATE
+    setShowChannel: (state, { payload }) => {
+      state.showChannel = payload;
+      console.log(state.showChannel)
+    },
+    resetChannel: () => INITIAL_STATE,
   },
 });
 
-export const { loadChannelList, setActiveChannel, selectChannel, setTotalUsersCount, setTopPosters, resetChannel } = ChannelSlice.actions;
+export const {
+  loadChannelList,
+  setActiveChannel,
+  selectChannel,
+  setTotalUsersCount,
+  setTopPosters,
+  setShowChannel,
+  resetChannel,
+} = ChannelSlice.actions;
 
 export default ChannelSlice.reducer;

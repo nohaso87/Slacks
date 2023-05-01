@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   ChatCreatorBox,
   CreatorInput,
@@ -14,11 +14,16 @@ import { Utility } from "../../Utility";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../../Config/Firebase";
 
+import { AiOutlineClose} from 'react-icons/ai'
+
 function ChatCreator({ createreplies, createMedia }) {
   const [reply, setReply] = useState("");
   const [mediaUpload, setMediaUpload] = useState(null);
   const { currentDirect } = useSelector((state) => state.direct);
   const utility = Utility();
+  const mediaFile = useRef()
+  const mediaInput = useRef()
+  const mediaNotifyText = useRef()
 
   const handleCreate = (e) => {
     e.preventDefault();
@@ -42,6 +47,7 @@ function ChatCreator({ createreplies, createMedia }) {
     e.target.value = "..."
     if (mediaUpload == null) {
       utility.notify("Select an image first");
+      e.target.disabled = false
     } else {
       const mediaName = `images/${v4()}`;
       const ImageRef = ref(storage, mediaName);
@@ -53,6 +59,7 @@ function ChatCreator({ createreplies, createMedia }) {
             setMediaUpload("")
             e.target.value = "Upload Media"
             e.target.disabled = false
+            mediaInput.current.disabled = false;
           })
         })
         .catch((err) => {
@@ -61,21 +68,33 @@ function ChatCreator({ createreplies, createMedia }) {
     }
   };
 
+  const disposeImage = () => {
+    mediaFile.current.value = null
+    mediaInput.current.disabled = false;
+    setMediaUpload(null)
+  }
+
+  const imageSelected = () => {
+    mediaInput.current.disabled = true;
+    return <span>Image Selected <AiOutlineClose /></span>
+  }
+
   return (
     <>
       <ChatCreatorBox>
         <CreatorMedia>
           <AiFillPlusSquare
             onClick={launchMedia}
-            style={{ fontSize: "30px", cursor: "pointer", color: "#6c5ce7" }}
+            style={{ cursor: "pointer", color: "#6c5ce7" }}
           />
         </CreatorMedia>
-        <CreateMediaNotify>{mediaUpload ? "Image Selected" : ""}</CreateMediaNotify>
+        <CreateMediaNotify ref={mediaNotifyText} onClick={disposeImage}>{mediaUpload ? (<>{imageSelected()}</> ): ""}</CreateMediaNotify>
         <CreatorInput
+          ref={mediaInput}
           type="text"
           value={reply}
           onChange={(e) => setReply(e.target.value)}
-          placeholder="Type your message here (Press Enter to send)"
+          placeholder="Type your message here..."
         />
         <CreatorButtonsWrap>
           <CreatorButton
@@ -91,6 +110,7 @@ function ChatCreator({ createreplies, createMedia }) {
         </CreatorButtonsWrap>
       </ChatCreatorBox>
       <input
+        ref={mediaFile}
         type="file"
         id="mediaInput"
         onChange={(e) => setMediaUpload(e.target.files[0])}

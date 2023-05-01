@@ -4,8 +4,9 @@ import { ref, uploadBytes } from "firebase/storage";
 import { Utility } from "../../Utility";
 import { auth, db, storage } from "../../Config/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { collection, doc, getDocs, or, query, updateDoc, where } from "firebase/firestore";
+import { collection, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { useSelector } from "react-redux";
+import { AiOutlineClose} from 'react-icons/ai'
 
 
 function UploadAvatar({ display, toggleWindow, toggleAvatarSettings }) {
@@ -75,7 +76,7 @@ function UploadAvatar({ display, toggleWindow, toggleAvatarSettings }) {
             ref={imageInput}
           />
           <ImageSubmit type="submit" onClick={uploadImage} />
-        <ImageBoxClose onClick={closeAvatarUpload}>Close</ImageBoxClose>
+        <ImageBoxClose onClick={closeAvatarUpload}><AiOutlineClose /></ImageBoxClose>
         </>
       </UploadBox>
     </>

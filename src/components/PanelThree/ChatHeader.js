@@ -12,6 +12,7 @@ import {
   SenderActiveStatus,
   HeaderLoading,
   LoadingIcon,
+  GoBack,
 } from "../Style";
 import {
   arrayRemove,
@@ -24,11 +25,13 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../../Config/Firebase";
+import { setShowChannel } from "../features/Channels/ChannelSlice";
 
 function ChatHeader({ bundle }) {
   const { activeChannel, totalUsers } = useSelector((state) => state.channels);
   const [starredcolor, setStarredcolor] = useState("false");
   const { currentDirect } = useSelector((state)=>state.direct)
+  const dispatch = useDispatch()
 
   const { label, getUsersCount, usersLabel, setStarredList, starred, uid } = bundle;
 
@@ -55,7 +58,9 @@ function ChatHeader({ bundle }) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeChannel, totalUsers]);
 
-
+  const goBack = (e) => {
+    dispatch(setShowChannel(e))
+  }
 
   return (
     <>
@@ -67,6 +72,7 @@ function ChatHeader({ bundle }) {
             !currentDirect ? 
             (
               <ChatTitle>
+                <GoBack onClick={()=>goBack("false")}/>
                 {activeChannel?.name}
                 {activeChannel.name ? 
                   <Starr

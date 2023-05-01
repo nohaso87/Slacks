@@ -54,10 +54,14 @@ const Signup = () => {
           if (password !== reTypePassword) {
             utility.notify("Passwords don't match");
           } else {
+            e.target.disabled = true
+            e.target.value = "..."
 
             registerUserWithEmailAndPassword(username, email, password)
               .then((userCredentials) => {
                 utility.goTo("/");
+                e.target.disabled = false
+                e.target.value = "Signup"
               })
               .catch((error) => {
                 if (error.message === "Firebase: Error (auth/invalid-email).") {

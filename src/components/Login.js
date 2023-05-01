@@ -57,6 +57,8 @@ const Login = () => {
           } else {
             utility.notify("Incorrect Username/Password");
           }
+          e.target.disabled = false
+          e.target.value = "Login"
         });
     } else {
       utility.notify("All fields are mandatory!");

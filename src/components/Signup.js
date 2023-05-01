@@ -81,6 +81,8 @@ const Signup = () => {
                 } else {
                   utility.notify("Unable to register");
                 }
+                e.target.disabled = false
+                e.target.value = "Signup"
               });
           }
         }else{

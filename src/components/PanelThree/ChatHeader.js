@@ -86,6 +86,7 @@ function ChatHeader({ bundle }) {
               </ChatTitle>
             ): (
             <ChatTitle>
+            <GoBack onClick={()=>goBack("false")}/>
               {currentDirect}
               <SenderActiveStatus>Active</SenderActiveStatus>
             </ChatTitle>)

@@ -236,6 +236,7 @@ function Home() {
 
   // Direct Messaging function
   const getDirectMessages = (sender) => {
+    if (sender === username) return;
     const collectionRef = collection(db, "direct");
     const queryRef = query(
       collectionRef,
